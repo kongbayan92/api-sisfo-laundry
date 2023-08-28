@@ -7,14 +7,11 @@ pelangganController.post(
   "/",
   [authMiddleware.verifyToken],
   async (req, res) => {
-    // Periksa pelanggan
     const pelangganAda = await pelangganModel.findOne({ hp: req.body.hp });
     if (pelangganAda) {
-      // Jika pelanggan ada, kembalikan pelanggan dalam response
       return res.status(200).json(pelangganAda);
     }
 
-    // Simpan pelanggan ke dalam database
     const pelangganBaru = await pelangganModel.create(req.body);
     return res.status(201).json(pelangganBaru);
   }
