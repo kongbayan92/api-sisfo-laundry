@@ -7,14 +7,17 @@ pelangganController.post(
   "/",
   [authMiddleware.verifyToken],
   async (req, res) => {
-    // Periksa pelanggan
-    const pelangganAda = await pelangganModel.findOne({ hp: req.body.hp });
-    if (pelangganAda) {
-      // Jika pelanggan ada, kembalikan pelanggan dalam response
-      return res.status(200).json(pelangganAda);
+    if (!(req.body.nama && req.body.alamat && req.body.hp)) {
+      return res
+        .status(400)
+        .json({ message: "Data pelanggan harus diisi lengkap" });
     }
 
-    // Simpan pelanggan ke dalam database
+    const pelangganAda = await pelangganModel.findOne({ hp: req.body.hp });
+    if (pelangganAda) {
+      return res.status(400).json({ message: "Pelanggan sudah pernah dibuat" });
+    }
+
     const pelangganBaru = await pelangganModel.create(req.body);
     return res.status(201).json(pelangganBaru);
   }
@@ -32,6 +35,7 @@ pelangganController.get(
     const pelanggan = await pelangganModel.findOne({
       _id: req.params.id,
     });
+
     return res.status(200).json(pelanggan);
   }
 );
