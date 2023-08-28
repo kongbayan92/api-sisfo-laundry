@@ -4,6 +4,10 @@ const barangModel = require("../models/barang.model");
 const barangController = express.Router();
 
 barangController.post("/", authMiddleware.verifyToken, async (req, res) => {
+  if (!req.body.nama) {
+    return res.status(400).json({ message: "Nama wajib diisi" });
+  }
+
   const barang = await barangModel.create(req.body);
   return res.status(201).json(barang);
 });
@@ -19,6 +23,10 @@ barangController.get("/:id", authMiddleware.verifyToken, async (req, res) => {
 });
 
 barangController.put("/:id", authMiddleware.verifyToken, async (req, res) => {
+  if (!req.body.nama) {
+    return res.status(400).json({ message: "Nama wajib diisi" });
+  }
+
   const barang = await barangModel.findByIdAndUpdate(
     { _id: req.params.id },
     req.body,
