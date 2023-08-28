@@ -9,11 +9,6 @@ app.use(express.json());
 app.use("/users", require("./controllers/user.controller"));
 app.use("/pelanggan", require("./controllers/pelanggan.controller"));
 app.use("/barang", require("./controllers/barang.controller"));
-// app.use("/jabatan", require("./controllers/jabatan.controller"));
-// app.use("/golongan", require("./controllers/golongan.controller"));
-// app.use("/benefit", require("./controllers/benefit.controller"));
-// app.use("/potongan", require("./controllers/potongan.controller"));
-// app.use("/karyawan", require("./controllers/karyawan.controller"));
-// app.use("/gaji", require("./controllers/gaji.controller"));
+app.use("/terima", require("./controllers/terima.controller"));
 
 module.exports = app;
