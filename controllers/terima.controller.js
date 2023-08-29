@@ -18,4 +18,40 @@ terimaController.get("/:id", authMiddleware.verifyToken, async (req, res) => {
   return res.status(200).json(terima);
 });
 
+terimaController.post(
+  "/:id/selesai",
+  authMiddleware.verifyToken,
+  async (req, res) => {
+    let terima = await terimaModel.findOneAndUpdate(
+      { _id: req.params.id },
+      { selesai: true },
+      { new: true }
+    );
+
+    return res.status(200).json(terima);
+  }
+);
+
+terimaController.post(
+  "/:id/diambil",
+  authMiddleware.verifyToken,
+  async (req, res) => {
+    let terima = await terimaModel.findOne({ _id: req.params.id });
+
+    if (terima && !terima.selesai) {
+      return res
+        .status(400)
+        .json({ message: "Anda belum menyelesaikan cucian" });
+    }
+
+    terima = await terimaModel.findOneAndUpdate(
+      { _id: req.params.id },
+      { diambil: true },
+      { new: true }
+    );
+
+    return res.status(200).json(terima);
+  }
+);
+
 module.exports = terimaController;
